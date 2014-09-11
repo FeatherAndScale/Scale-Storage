@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Storage.Queue;
 
 namespace Scale.Storage.Queue
@@ -23,6 +23,10 @@ namespace Scale.Storage.Queue
             _queueClient = StorageAccount.CreateCloudQueueClient();
         }
 
+        /// <summary>
+        /// Creates queues if they don't already exist.
+        /// </summary>
+        /// <param name="queueNames">An array of queue names to try and create.</param>
         public async Task CreateQueues(string[] queueNames)
         {
             if(queueNames == null || queueNames.Length == 0) throw new ArgumentNullException("queueNames");
@@ -71,6 +75,29 @@ namespace Scale.Storage.Queue
             return queueMessage;
         }
 
+        /// <summary>
+        /// De-queues (messageCount) messages, making them temporarily invisible to other Queue clients.
+        /// </summary>
+        /// <remarks>Delete the message using <see cref="DeleteMessage"/> when finished processing. If the message is not deleted for any reason it will become 
+        /// visible to queue clients again after a set period of time.</remarks>
+        public async Task<IEnumerable<QueueMessage>> GetMessages(string queueName, int messageCount)
+        {
+            // Get the next message
+            var queue = _queueClient.GetQueueReference(queueName);
+
+            var messages = await queue.GetMessagesAsync(messageCount, GetVisibilityTime(), null, null);
+
+            if (messages == null)
+            {
+                Trace.TraceInformation("No messages on queue {0}", queueName);
+                return null;
+            }
+
+            var queueMessages = messages.Select(m => new AzureQueueMessage(queueName, m));
+            Trace.TraceInformation("Got Messages {0}", queueMessages);
+            return queueMessages;
+        }
+
         private TimeSpan GetVisibilityTime()
         {
             string visibilitySettingValue = Settings["AzureQueueStorageGetMessageVisibilityTime"];
@@ -112,16 +139,12 @@ namespace Scale.Storage.Queue
             Trace.TraceInformation("Deleted Message " + message);
         }
 
-        public static AzureQueueStorage GetStorage()
+        /// <summary>
+        /// Gets an instance of <see cref="AzureQueueStorage"/>
+        /// </summary>
+        public static AzureQueueStorage GetStorage(NameValueCollection settings)
         {
-            return new AzureQueueStorage(new NameValueCollection
-            {
-                {"StorageConnectionString", CloudConfigurationManager.GetSetting("StorageConnectionString")},
-                {
-                    "AzureQueueStorageGetMessageVisibilityTime",
-                    CloudConfigurationManager.GetSetting("AzureQueueStorageGetMessageVisibilityTime")
-                }
-            });
+            return new AzureQueueStorage(settings);
         }
     }
 }

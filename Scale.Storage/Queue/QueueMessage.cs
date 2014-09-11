@@ -3,10 +3,17 @@ using Newtonsoft.Json;
 
 namespace Scale.Storage.Queue
 {
+    /// <summary>
+    /// A Queue Message model object.
+    /// </summary>
     public class QueueMessage
     {
         protected string Message;
         protected readonly string QueueName;
+        
+        /// <summary>
+        /// The Data entity to include in the message the Message.
+        /// </summary>
         public readonly object Data;
 
         /// <summary>
@@ -39,12 +46,19 @@ namespace Scale.Storage.Queue
             Data = messageModel.Data;
         }
 
+        /// <summary>
+        /// Sets failure metadata on the message.
+        /// </summary>
+        [Obsolete("Will be deprecated in a future release.")]
         public void SetFailMessage(string failMessage)
         {
             if (Data == null) throw new InvalidOperationException();    //REFACTOR - this is getting smelly
             SerializeDataToMessage(failMessage);
         }
 
+        /// <summary>
+        /// Gets the Queue Name
+        /// </summary>
         public string GetQueueName()
         {
             return QueueName;

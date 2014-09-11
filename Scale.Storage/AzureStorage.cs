@@ -5,6 +5,9 @@ using Scale.Storage.Queue;
 
 namespace Scale.Storage
 {
+    /// <summary>
+    /// Azure Storage base class.
+    /// </summary>
     public abstract class AzureStorage
     {
         protected readonly NameValueCollection Settings;
@@ -19,8 +22,8 @@ namespace Scale.Storage
 
             Settings = settings;
 
-            string connectionString = Settings["StorageConnectionString"];
-            if (string.IsNullOrEmpty(connectionString)) throw new InvalidOperationException("StorageConnectionString was not found in settings.");
+            string connectionString = Settings["AZURE_STORAGE_CONNECTION_STRING"];
+            if (string.IsNullOrEmpty(connectionString)) throw new InvalidOperationException("AZURE_STORAGE_CONNECTION_STRING was not found in settings.");
 
             StorageAccount = CloudStorageAccount.Parse(connectionString);
         }

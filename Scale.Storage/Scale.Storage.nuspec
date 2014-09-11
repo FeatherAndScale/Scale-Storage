@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Scale-Storage</id>
-    <version>1.0.0.0</version>
+    <version>1.1.0</version>
     <title>Scale-Storage</title>
     <authors>daniellarsennz</authors>
     <owners>daniellarsennz</owners>
@@ -12,7 +12,7 @@
     <description>
       Azure Table and Queue Storage wrappers for .NET.
     </description>
-    <releaseNotes>First release. Wrappers for Queue and Table storage.</releaseNotes>
+    <releaseNotes>~ Now using standard Azure connection string setting: AZURE_STORAGE_CONNECTION_STRING. + Added GetMessages() method for Queue Storage. ~ Changed AzureQueueStorage GetStorage Helper - settings are now injected. + Interface for AzureTableStorage.</releaseNotes>
     <copyright>Copyright 2014</copyright>
     <tags>.net azure c# storage</tags>
   </metadata>

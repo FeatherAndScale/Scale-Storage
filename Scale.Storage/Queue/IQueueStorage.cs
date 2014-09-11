@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Scale.Storage.Queue
 {
@@ -24,6 +25,13 @@ namespace Scale.Storage.Queue
         /// <remarks>Delete the message using <see cref="DeleteMessage"/> when finished processing. If the message is not deleted for any reason it will become 
         /// visible to queue clients again after a set period of time.</remarks>
         Task<QueueMessage> GetMessage(string queueName);
+
+        /// <summary>
+        /// De-queues (messageCount) messages, making them temporarily invisible to other Queue clients.
+        /// </summary>
+        /// <remarks>Delete messages using <see cref="DeleteMessage"/> when finished processing. If a message is not deleted for any reason it will become 
+        /// visible to queue clients again after a set period of time.</remarks>
+        Task<IEnumerable<QueueMessage>> GetMessages(string queueName, int messageCount);
 
         /// <summary>
         /// Updates a message on the Queue.

@@ -7,7 +7,10 @@ using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Scale.Storage.Table
 {
-    public class AzureTableStorage : AzureStorage
+    /// <summary>
+    /// An Azure Table Storage service class.
+    /// </summary>
+    public class AzureTableStorage : AzureStorage, ITableStorage
     {
         private readonly CloudTableClient _tableClient; 
 
@@ -16,6 +19,9 @@ namespace Scale.Storage.Table
             _tableClient = StorageAccount.CreateCloudTableClient();
         }
 
+        /// <summary>
+        /// Creates tables for tableNames if they don't already exist.
+        /// </summary>
         public async Task CreateTables(string[] tableNames)
         {
             if (tableNames == null || tableNames.Length == 0) throw new ArgumentNullException("tableNames");
@@ -27,6 +33,9 @@ namespace Scale.Storage.Table
             }
         }
 
+        /// <summary>
+        /// Inserts entity into tableName.
+        /// </summary>
         public async Task Insert(string tableName, TableEntity entity)
         {
             var table = _tableClient.GetTableReference(tableName);
@@ -36,6 +45,9 @@ namespace Scale.Storage.Table
             //TODO: Handle error here?
         }
 
+        /// <summary>
+        /// Inserts entities into tableName.
+        /// </summary>
         public async Task Insert(string tableName, TableEntity[] entities)
         {
             var table = _tableClient.GetTableReference(tableName);
@@ -48,6 +60,9 @@ namespace Scale.Storage.Table
             //TODO: Return (abstracted) results?
         }
 
+        /// <summary>
+        /// Retrieves an entity of T for a given table, partitionKey and rowKey. T can be any <see cref="TableEntity"/>
+        /// </summary>
         public async Task<T> Retrieve<T>(string tableName, string partitionKey, string rowKey) where T : TableEntity
         {
             var table = _tableClient.GetTableReference(tableName);
@@ -56,6 +71,11 @@ namespace Scale.Storage.Table
             return result.Result as T;
         }
 
+        /// <summary>
+        /// Gets an instance of an <see cref="AzureTableStorage"/>.
+        /// </summary>
+        /// <param name="settings">A <see cref="NameValueCollection"/> of settings for the application. <see cref="AzureTableStorage"/> expects
+        ///  a value for the key "StorageConnectionString" to be present.</param>
         public static AzureTableStorage GetTableStorage(NameValueCollection settings)
         {
             return new AzureTableStorage(settings);

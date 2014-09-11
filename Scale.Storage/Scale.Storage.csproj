@@ -76,18 +76,12 @@
     <Compile Include="Queue\QueueMessage.cs" />
     <Compile Include="Queue\QueueNames.cs" />
     <Compile Include="Table\AzureTableStorage.cs" />
-    <Compile Include="Table\TableNames.cs" />
+    <Compile Include="Table\ITableStorage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Scale.Storage.nuspec" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Radiostr.Model\Radiostr.Model.csproj">
-      <Project>{d3a94cda-fa92-43ae-a6a7-b7538141e05a}</Project>
-      <Name>Radiostr.Model</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
