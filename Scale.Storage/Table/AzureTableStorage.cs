@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Scale.Storage.Table
@@ -69,6 +72,42 @@ namespace Scale.Storage.Table
             var operation = TableOperation.Retrieve<T>(partitionKey, rowKey);
             var result = await table.ExecuteAsync(operation);
             return result.Result as T;
+        }
+
+        /// <summary>
+        /// Retrieves an entity of T for a given table, partitionKey and rowKey. T can be any <see cref="TableEntity"/>
+        /// </summary>
+        public async Task<IEnumerable<T>> Query<T>(string tableName, TableQuery<T> query) where T : TableEntity, new()
+        {
+            var table = _tableClient.GetTableReference(tableName);
+            TableContinuationToken token = null;
+            var entities = new List<T>();
+            do
+            {
+                var queryResult = await table.ExecuteQuerySegmentedAsync(query, token);
+                entities.AddRange(queryResult.Results);
+                token = queryResult.ContinuationToken;
+            } while (token != null);
+
+            return entities;
+        }
+
+        /// <summary>
+        /// Retrieves an entity of T for a given table, partitionKey and rowKey. T can be any <see cref="TableEntity"/>
+        /// </summary>
+        public async Task<IEnumerable<DynamicTableEntity>> Query(string tableName, TableQuery query) 
+        {
+            var table = _tableClient.GetTableReference(tableName);
+            TableContinuationToken token = null;
+            var entities = new List<DynamicTableEntity>();
+            do
+            {
+                var queryResult = await table.ExecuteQuerySegmentedAsync(query, token);
+                entities.AddRange(queryResult.Results);
+                token = queryResult.ContinuationToken;
+            } while (token != null);
+
+            return entities;
         }
 
         /// <summary>
