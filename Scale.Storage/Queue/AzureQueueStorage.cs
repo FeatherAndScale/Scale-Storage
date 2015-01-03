@@ -18,7 +18,7 @@ namespace Scale.Storage.Queue
         /// <summary>
         /// Instantiates a new <see cref="AzureQueueStorage"/> service.
         /// </summary>
-        internal AzureQueueStorage(NameValueCollection settings) : base(settings)
+        public AzureQueueStorage(NameValueCollection settings) : base(settings)
         {
             _queueClient = StorageAccount.CreateCloudQueueClient();
         }
@@ -142,6 +142,7 @@ namespace Scale.Storage.Queue
         /// <summary>
         /// Gets an instance of <see cref="AzureQueueStorage"/>
         /// </summary>
+        [Obsolete("Use public constructor on Instance")]
         public static AzureQueueStorage GetStorage(NameValueCollection settings)
         {
             return new AzureQueueStorage(settings);

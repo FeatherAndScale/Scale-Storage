@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Scale-Storage</id>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
     <title>Scale-Storage</title>
     <authors>daniellarsennz</authors>
     <owners>daniellarsennz</owners>
@@ -12,7 +12,7 @@
     <description>
       Azure Table and Queue Storage wrappers for .NET.
     </description>
-    <releaseNotes>Added query methods for querying multiple entities.</releaseNotes>
+    <releaseNotes>Constrcutors for AzureTableStorage and AzureQueueStorage are now public.</releaseNotes>
     <copyright>Copyright 2014</copyright>
     <tags>.net azure c# storage</tags>
   </metadata>

@@ -17,7 +17,11 @@ namespace Scale.Storage.Table
     {
         private readonly CloudTableClient _tableClient; 
 
-        internal AzureTableStorage(NameValueCollection settings) : base(settings)
+        /// <summary>
+        /// Instantiates a new <see cref="AzureTableStorage"/>.
+        /// </summary>
+        /// <param name="settings"></param>
+        public AzureTableStorage(NameValueCollection settings) : base(settings)
         {
             _tableClient = StorageAccount.CreateCloudTableClient();
         }
@@ -115,6 +119,7 @@ namespace Scale.Storage.Table
         /// </summary>
         /// <param name="settings">A <see cref="NameValueCollection"/> of settings for the application. <see cref="AzureTableStorage"/> expects
         ///  a value for the key "StorageConnectionString" to be present.</param>
+        [Obsolete("Use public constructor on Instance")]
         public static AzureTableStorage GetTableStorage(NameValueCollection settings)
         {
             return new AzureTableStorage(settings);
