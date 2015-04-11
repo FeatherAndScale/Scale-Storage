@@ -1,0 +1,3 @@
+<appSettings>
+	<add key="AZURE_STORAGE_CONNECTION_STRING" value="DefaultEndpointsProtocol=https;AccountName=jukebox30test;AccountKey=8T8F1UwZjlyhrDgu1oRqSSsSRySPHw4RynhEEzSq8aF6ZH2Vr3zWHIjNg0FTGF4E/92d8cLcfLy5AmnDLQslPQ==" />
+</appSettings>
