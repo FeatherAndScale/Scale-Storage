@@ -1,4 +1,4 @@
 Scale-Storage
 =============
 
-Azure Table and Queue Storage wrappers for .NET.
+Azure Table, Queue and Blob Storage wrappers for .NET.
