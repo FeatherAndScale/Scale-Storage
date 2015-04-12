@@ -34,33 +34,26 @@ namespace Scale.Storage.Blob
             await container.CreateIfNotExistsAsync();
         }
 
-        public async Task<string> Upload(string containerName, string blobName, Stream stream)
+        public async Task<string> Upload(string containerName, string blobName, string contentType, Stream stream)
         {
             // Retrieve reference to a previously created container.
-            CloudBlobContainer container = _blobClient.GetContainerReference(containerName);
+            var container = _blobClient.GetContainerReference(containerName);
 
             // Retrieve reference to a blob named "myblob".
-            CloudBlockBlob blockBlob = container.GetBlockBlobReference(blobName);
+            var blockBlob = container.GetBlockBlobReference(blobName);
+            blockBlob.Properties.ContentType = contentType;
             await blockBlob.UploadFromStreamAsync(stream);
             return blockBlob.Uri.ToString();
         }
 
-        public async Task<Stream> Download(string uri)
+        public async Task<CloudBlob> Download(string uri)
         {
             var blob = await _blobClient.GetBlobReferenceFromServerAsync(new Uri(uri));
 
-            //// Retrieve reference to a previously created container.
-            //CloudBlobContainer container = blobClient.GetContainerReference("mycontainer");
-
-            //// Retrieve reference to a blob named "photo1.jpg".
-            //CloudBlockBlob blockBlob = container.GetBlockBlobReference("photo1.jpg");
-
             // Download to memory stream
-            using (var stream = new System.IO.MemoryStream())
-            {
-                await blob.DownloadToStreamAsync(stream);
-                return stream;
-            }
+            var stream = new System.IO.MemoryStream();            
+            await blob.DownloadToStreamAsync(stream);
+            return new CloudBlob { Stream = stream, ContainerName = blob.Container.Name, Uri = blob.Uri.ToString() };
         }
     }
 }

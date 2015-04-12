@@ -11,8 +11,8 @@ namespace Scale.Storage.Blob
     {
         Task CreateContainer(string containerName);
 
-        Task<string> Upload(string containerName, string blobName, Stream stream);
+        Task<string> Upload(string containerName, string blobName, string contentType, Stream stream);
 
-		Task<Stream> Download(string uri);
+		Task<CloudBlob> Download(string uri);
     }
 }
