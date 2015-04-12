@@ -68,6 +68,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AzureStorage.cs" />
+    <Compile Include="Blob\AzureBlobStorage.cs" />
+    <Compile Include="Blob\CloudBlob.cs" />
+    <Compile Include="Blob\IBlobStorage.cs" />
     <Compile Include="Queue\AzureQueueMessage.cs" />
     <Compile Include="Queue\Extensions\QueueMessageExtensions.cs" />
     <Compile Include="Queue\IQueueStorage.cs" />
