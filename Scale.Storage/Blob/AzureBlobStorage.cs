@@ -39,7 +39,7 @@ namespace Scale.Storage.Blob
             // Retrieve reference to a previously created container.
             var container = _blobClient.GetContainerReference(containerName);
 
-            // Retrieve reference to a blob named "myblob".
+            // Retrieve reference to blob.
             var blockBlob = container.GetBlockBlobReference(blobName);
             blockBlob.Properties.ContentType = contentType;
             await blockBlob.UploadFromStreamAsync(stream);

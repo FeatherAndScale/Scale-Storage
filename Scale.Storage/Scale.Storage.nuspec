@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Scale-Storage</id>
-    <version>1.2.1</version>
+    <version>1.3.0</version>
     <title>Scale-Storage</title>
     <authors>daniellarsennz</authors>
     <owners>daniellarsennz</owners>
@@ -10,10 +10,10 @@
     <projectUrl>https://github.com/FeatherAndScale/Scale-Storage</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
-      Azure Table and Queue Storage wrappers for .NET.
+      Azure Table, Queue and Blob Storage wrappers for .NET.
     </description>
-    <releaseNotes>Constrcutors for AzureTableStorage and AzureQueueStorage are now public.</releaseNotes>
-    <copyright>Copyright 2014</copyright>
+    <releaseNotes>Added minimal Blob Storage support.</releaseNotes>
+    <copyright>Copyright 2014-2105</copyright>
     <tags>.net azure c# storage</tags>
   </metadata>
 </package>
