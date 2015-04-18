@@ -10,7 +10,7 @@ Library is .NET4.5 and Async by default.
 ## `AzureBlobStorage`
 Azure Block Blob Storage library wrapper for .NET. Only [Block Storage] is currently supported. 
 
-### List()
+### `List()`
 Gets a list of `CloudBlob` for a given `containerName` and optional `folderName`.
 
 **Params**
