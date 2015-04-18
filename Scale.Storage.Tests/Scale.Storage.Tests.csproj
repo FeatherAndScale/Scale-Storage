@@ -77,6 +77,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Blob\AzureBlobStorageTests.cs" />
     <Compile Include="Queue\QueueMessageTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -96,6 +97,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Table\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Blob\Test.jpg" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
