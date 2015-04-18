@@ -82,10 +82,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Radiostr.Model\Radiostr.Model.csproj">
-      <Project>{d3a94cda-fa92-43ae-a6a7-b7538141e05a}</Project>
-      <Name>Radiostr.Model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Scale.Storage\Scale.Storage.csproj">
       <Project>{e24ae0ad-d71c-423c-8363-940ba2eb4e24}</Project>
       <Name>Scale.Storage</Name>
@@ -99,7 +95,9 @@
     <Folder Include="Table\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Blob\Test.jpg" />
+    <Content Include="Blob\Test.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

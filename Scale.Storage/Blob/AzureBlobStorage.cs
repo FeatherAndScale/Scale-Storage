@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System.IO;
 using System.Collections.Specialized;
+using System.Diagnostics;
 
 namespace Scale.Storage.Blob
 {
@@ -47,6 +48,7 @@ namespace Scale.Storage.Blob
             var blockBlob = container.GetBlockBlobReference(blobName);
             blockBlob.Properties.ContentType = contentType;
             await blockBlob.UploadFromStreamAsync(stream);
+
             return blockBlob.Uri.ToString();
         }
 

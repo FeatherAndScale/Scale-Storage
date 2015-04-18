@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Diagnostics;
 using System.Collections.Specialized;
+using System.Collections.Generic;
 
 namespace Scale.Storage.Tests.Blob
 {
@@ -24,20 +25,27 @@ namespace Scale.Storage.Tests.Blob
             var storage = new AzureBlobStorage(settings);
             string guid = Guid.NewGuid().ToString("N");
             
-            string containerName = "c_" + guid;
+            string containerName = "c" + guid;
             await storage.CreateContainer(containerName);
 
             // upload 5 blobs
-            var newBlobName = new Func<string>(() => "b_" + Guid.NewGuid().ToString("N"));
-            string[] blobNames = new[] { newBlobName(), newBlobName(), newBlobName(), newBlobName(), newBlobName() };
-            var stream = new FileStream(@".\Blob\Test.jpg", FileMode.Open, FileAccess.Read);
+            var blobNames = new List<string>(5);
+            var newBlobName = new Func<string>(() => { 
+                string name = "B" + Guid.NewGuid().ToString("N") + ".jpg";
+                blobNames.Add(name);
+                return name;
+            });
+            //string[] blobNames = new[] { newBlobName(), newBlobName(), newBlobName(), newBlobName(), newBlobName() };
+            //var stream = new FileStream(@".\Blob\Test.jpg", FileMode.Open, FileAccess.Read);
             //Action upload = ()=> storage.Upload(containerName, newBlobName(), "image/jpeg", stream);
             //var tasks = new Task[]{new Task( upload), new Task( upload)};
-            var tasks = new Task[] {storage.Upload(containerName, newBlobName(), "image/jpeg", stream), 
-                storage.Upload(containerName, newBlobName(), "image/jpeg", stream),
-                storage.Upload(containerName, newBlobName(), "image/jpeg", stream),
-                storage.Upload(containerName, newBlobName(), "image/jpeg", stream),
-                storage.Upload(containerName, newBlobName(), "image/jpeg", stream)};
+            var tasks = new Task[] {
+                storage.Upload(containerName, newBlobName(), "image/jpeg", new FileStream(@".\Blob\Test.jpg", FileMode.Open, FileAccess.Read)), 
+                storage.Upload(containerName, newBlobName(), "image/jpeg", new FileStream(@".\Blob\Test.jpg", FileMode.Open, FileAccess.Read)),
+                storage.Upload(containerName, newBlobName(), "image/jpeg", new FileStream(@".\Blob\Test.jpg", FileMode.Open, FileAccess.Read)),
+                storage.Upload(containerName, newBlobName(), "image/jpeg", new FileStream(@".\Blob\Test.jpg", FileMode.Open, FileAccess.Read)),
+                storage.Upload(containerName, newBlobName(), "image/jpeg", new FileStream(@".\Blob\Test.jpg", FileMode.Open, FileAccess.Read))
+            };
             Task.WaitAll(tasks);
             
             try
@@ -46,12 +54,12 @@ namespace Scale.Storage.Tests.Blob
 
                 // act
                 var blobs = await storage.List(containerName, true);
+                blobs.ToList().ForEach(b => Trace.TraceInformation(b.ToString()));
 
                 // assert
                 var uris = blobs.Select(b => b.Uri);
                 Assert.IsTrue(uris.Count() == 5, "List should return 5 items.");
                 string allUris = string.Join(",", uris);
-                Trace.TraceInformation("allUris = " + allUris);
                 Assert.IsTrue(blobNames.All(b => allUris.Contains(b)), 
                     "There should be a blob URI in the list for each if the Blobs uploaded at Setup.");
             }
