@@ -86,25 +86,52 @@ namespace Scale.Storage.Blob
             return results.Select(b => new CloudBlob { ContainerName = containerName, Uri = b.Uri.ToString() });
         }
 
+        /// <summary>
+        /// Gets a list of <see cref="CloudBlob" for a given containerName and folderName./>
+        /// </summary>
+        /// <param name="containerName">The name of the container.</param>
+        /// <param name="folderName">The folder name of the Blobs to list.</param>
+        /// <param name="pages">The maximum number of Pages of items to retrieve. There are 5000 items per Page (this is the API limit).</param>
+        /// <returns>Task of IEnumerable of <see cref="CloudBlob"/>. Streams are not set on these results, use <see cref="Download"/> to get Streams.</returns>
         public async Task<IEnumerable<CloudBlob>> List(string containerName, string folderName, int pages)
         {
             return await List(containerName, folderName, false, pages);
         }
 
+        /// <summary>
+        /// Gets a list of <see cref="CloudBlob" for a given containerName and folderName./>
+        /// </summary>
+        /// <param name="containerName">The name of the container.</param>
+        /// <param name="flatten">When true, will return a flattened list of all Blobs in the container and sub-folders.</param>
+        /// <param name="pages">The maximum number of Pages of items to retrieve. There are 5000 items per Page (this is the API limit).</param>
+        /// <returns>Task of IEnumerable of <see cref="CloudBlob"/>. Streams are not set on these results, use <see cref="Download"/> to get Streams.</returns>
         public async Task<IEnumerable<CloudBlob>> List(string containerName, bool flatten, int pages)
         {
             return await List(containerName, null, flatten, pages);
         }
 
+        /// <summary>
+        /// Gets a list of <see cref="CloudBlob" for a given containerName and folderName./>
+        /// </summary>
+        /// <param name="containerName">The name of the container.</param>
+        /// <param name="folderName">The folder name of the Blobs to list.</param>
+        /// <returns>Task of IEnumerable of <see cref="CloudBlob"/>. Streams are not set on these results, use <see cref="Download"/> to get Streams.</returns>
+        /// <remarks>Will only return one page of max 5000 items (this is the API limit). See other overloads if you need more pages.</remarks>
         public async Task<IEnumerable<CloudBlob>> List(string containerName, string folderName)
         {
             return await List(containerName, folderName, false, 1);
         }
 
+        /// <summary>
+        /// Gets a list of <see cref="CloudBlob" for a given containerName and folderName./>
+        /// </summary>
+        /// <param name="containerName">The name of the container.</param>
+        /// <param name="flatten">When true, will return a flattened list of all Blobs in the container and sub-folders.</param>
+        /// <returns>Task of IEnumerable of <see cref="CloudBlob"/>. Streams are not set on these results, use <see cref="Download"/> to get Streams.</returns>
+        /// <remarks>Will only return one page of max 5000 items (this is the API limit). See other overloads if you need more pages.</remarks>
         public async Task<IEnumerable<CloudBlob>> List(string containerName, bool flatten)
         {
             return await List(containerName, null, flatten, 1);
         }
-
     }
 }
